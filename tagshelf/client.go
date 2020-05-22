@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/tagshelf-api/go/constant"
 )
 
 // Config client configuration to comunicate with tagshelf API
@@ -30,10 +32,7 @@ type client struct {
 
 func (c *client) Status() (r Responder, err error) {
 	method := "GET"
-	url := fmt.Sprintf(
-		"%s/api/tagshelf/status",
-		"https://staging.tagshelf.com",
-	)
+	url := fmt.Sprintf(constant.EpStatus)
 
 	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
@@ -57,10 +56,7 @@ func (c *client) Status() (r Responder, err error) {
 
 func (c *client) WhoAmI() (r Responder, err error) {
 	method := "GET"
-	url := fmt.Sprintf(
-		"%s/api/tagshelf/who-am-i",
-		"https://staging.tagshelf.com",
-	)
+	url := fmt.Sprintf(constant.EpWhoAmI)
 
 	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
@@ -83,15 +79,23 @@ func (c *client) WhoAmI() (r Responder, err error) {
 }
 
 /*func (c *client) Ping() (r Responder, err error) {
+	method := "GET"
+	url := fmt.Sprintf(constant.EpPing)
 	return
 }
 func (c *client) FileUpload(File) (r Responder, err error) {
+	method := "POST"
+	url := fmt.Sprintf(constant.EpFileUpload)
 	return
 }
-func (c *client) FileDetail(string) (r Responder, err error) {
+func (c *client) FileDetail(id string) (r Responder, err error) {
+	method := "GET"
+	url := fmt.Sprintf(constant.EpFileDetail, id)
 	return
 }
-func (c *client) JobDetail(string) (r Responder, err error) {
+func (c *client) JobDetail(id string) (r Responder, err error) {
+	method := "GET"
+	url := fmt.Sprintf(constant.EpJobDetail, id)
 	return
 }*/
 
