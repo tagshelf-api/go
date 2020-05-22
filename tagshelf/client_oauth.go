@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/tagshelf-api/go/tagshelf/constant"
 )
 
 type OAuthClient struct {
@@ -38,23 +40,25 @@ func (c *OAuthClient) Auth(config Config) (r Requester, err error) {
 	}
 	c.token = token
 
-	c.Header.Set("Content-Type", "application/json")
-	c.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token.AccessToken))
+	c.Header.Set("Content-Type", constant.CtJSON)
+	c.Header.Set(
+		"Authorization",
+		fmt.Sprintf(constant.AuthHBearer, token.AccessToken),
+	)
 	return c, nil
 }
 
 func (c OAuthClient) login() (token *OAuthToken, err error) {
-	c.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	method := "POST"
-	URL := fmt.Sprintf(
-		"%s/token", "https://staging.tagshelf.com",
-	)
+	c.Header.Set("Content-Type", constant.CtXForm)
 	data := url.Values{}
-	data.Set("grant_type", c.GrantType)
-	data.Set("username", c.User)
-	data.Set("password", c.Pass)
+	data.Set(constant.OAuthGT, c.GrantType)
+	data.Set(constant.OAuthUSR, c.User)
+	data.Set(constant.OAuthPWD, c.Pass)
 
-	req, err := http.NewRequest(method, URL, strings.NewReader(data.Encode()))
+	req, err := http.NewRequest(
+		constant.EpTokenM, constant.EpToken,
+		strings.NewReader(data.Encode()),
+	)
 	if err != nil {
 		return nil, err
 	}

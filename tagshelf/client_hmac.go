@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/tagshelf-api/go/constant"
+	"github.com/tagshelf-api/go/tagshelf/constant"
 
 	"github.com/google/uuid"
 )
@@ -26,7 +26,7 @@ func (c *HMACClient) Auth(config Config) (r Requester, err error) {
 	c.Client = &http.Client{}
 	c.Header = http.Header{}
 
-	c.Header.Set("Content-Type", "application/json")
+	c.Header.Set("Content-Type", constant.CtJSON)
 	return c, nil
 }
 
@@ -63,15 +63,15 @@ func (c *HMACClient) Sign(method, uri string, body io.Reader) (
 	bundle := base64.StdEncoding.EncodeToString(mac.Sum(nil))
 
 	signature := fmt.Sprintf("%s:%s:%s:%d", appID, bundle, nonce, timestamp)
-	c.Header.Set("Authorization", fmt.Sprintf("amx %s", signature))
+	c.Header.Set(
+		"Authorization",
+		fmt.Sprintf(constant.AuthHAmx, signature),
+	)
 	return
 }
 
 func (c *HMACClient) Status() (r Responder, err error) {
-	method := "GET"
-	url := fmt.Sprintf(constant.EpStatus)
-
-	err = c.Sign(method, url, nil)
+	err = c.Sign(constant.EpStatusM, constant.EpStatus, nil)
 	if err != nil {
 		return
 	}
@@ -80,10 +80,7 @@ func (c *HMACClient) Status() (r Responder, err error) {
 }
 
 func (c *HMACClient) WhoAmI() (r Responder, err error) {
-	method := "GET"
-	url := fmt.Sprintf(constant.EpWhoAmI)
-
-	err = c.Sign(method, url, nil)
+	err = c.Sign(constant.EpWhoAmIM, constant.EpWhoAmI, nil)
 	if err != nil {
 		return
 	}

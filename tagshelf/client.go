@@ -2,10 +2,9 @@ package tagshelf
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
-	"github.com/tagshelf-api/go/constant"
+	"github.com/tagshelf-api/go/tagshelf/constant"
 )
 
 // Config client configuration to comunicate with tagshelf API
@@ -31,10 +30,7 @@ type client struct {
 }
 
 func (c *client) Status() (r Responder, err error) {
-	method := "GET"
-	url := fmt.Sprintf(constant.EpStatus)
-
-	req, err := http.NewRequest(method, url, nil)
+	req, err := http.NewRequest(constant.EpStatusM, constant.EpStatus, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -55,10 +51,7 @@ func (c *client) Status() (r Responder, err error) {
 }
 
 func (c *client) WhoAmI() (r Responder, err error) {
-	method := "GET"
-	url := fmt.Sprintf(constant.EpWhoAmI)
-
-	req, err := http.NewRequest(method, url, nil)
+	req, err := http.NewRequest(constant.EpWhoAmIM, constant.EpWhoAmI, nil)
 	if err != nil {
 		return nil, err
 	}
