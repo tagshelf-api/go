@@ -3,23 +3,23 @@ package tagshelf
 import "fmt"
 
 // New creates new client
-func New(config Config) (c Requester, err error) {
+func New(config Config) (client Requester, err error) {
 	if config.AppApiKey != "" {
-		client := &AppApiKeyClient{}
-		c, err = client.Auth(config)
+		c := &AppApiKeyClient{}
+		client, err = c.Auth(config)
 	}
 
 	if config.ApiKey != "" && config.SecretKey != "" {
-		client := &HMACClient{}
-		c, err = client.Auth(config)
+		c := &HMACClient{}
+		client, err = c.Auth(config)
 	}
 
 	if config.GrantType != "" && config.User != "" && config.Pass != "" {
-		client := &OAuthClient{}
-		c, err = client.Auth(config)
+		c := &OAuthClient{}
+		client, err = c.Auth(config)
 	}
 
-	if c != nil {
+	if client != nil {
 		return
 	}
 
