@@ -28,3 +28,7 @@ func New(config Config) (client Requester, err error) {
 	}
 	return
 }
+
+func NewFileUpload() *File {
+	return &File{}
+}

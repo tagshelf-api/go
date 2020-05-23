@@ -88,3 +88,47 @@ func (c *HMACClient) WhoAmI() (r Responder, err error) {
 
 	return c.client.WhoAmI()
 }
+
+func (c *HMACClient) Ping() (r Responder, err error) {
+	err = c.Sign(constant.EpPingM, constant.EpPing, nil)
+	if err != nil {
+		return
+	}
+
+	return c.client.Ping()
+}
+
+func (c *HMACClient) FileUpload(f *File) (r Responder, err error) {
+	err = c.Sign(constant.EpFileUploadM, constant.EpFileUpload, nil)
+	if err != nil {
+		return
+	}
+
+	return c.client.FileUpload(f)
+}
+
+func (c *HMACClient) FileDetail(id string) (r Responder, err error) {
+	err = c.Sign(
+		constant.EpFileDetailM,
+		fmt.Sprintf(constant.EpFileDetail, id),
+		nil,
+	)
+	if err != nil {
+		return
+	}
+
+	return c.client.FileDetail(id)
+}
+
+func (c *HMACClient) JobDetail(id string) (r Responder, err error) {
+	err = c.Sign(
+		constant.EpJobDetailM,
+		fmt.Sprintf(constant.EpJobDetail, id),
+		nil,
+	)
+	if err != nil {
+		return
+	}
+
+	return c.client.JobDetail(id)
+}
