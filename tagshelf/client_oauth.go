@@ -15,6 +15,7 @@ type OAuthClient struct {
 	token *OAuthToken
 }
 
+// OAuthToken these are the fields of an OAuth token from tagshelf
 type OAuthToken struct {
 	AccessToken string `json:"access_token"`
 	Type        string `json:"token_type"`
@@ -41,6 +42,7 @@ func (c *OAuthClient) Auth(config Config) (r Requester, err error) {
 	c.token = token
 
 	c.Header.Set("Content-Type", constant.CtJSON)
+	c.Header.Set("User-Agent", constant.UAHeader)
 	c.Header.Set(
 		"Authorization",
 		fmt.Sprintf(constant.AuthHBearer, token.AccessToken),

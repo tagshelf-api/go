@@ -16,5 +16,6 @@ func (c *AppApiKeyClient) Auth(config Config) (r Requester, err error) {
 	c.Header = http.Header{}
 	c.Header.Set("Content-Type", constant.CtJSON)
 	c.Header.Set("X-TagshelfAPI-Key", c.Config.AppApiKey)
+	c.Header.Set("User-Agent", constant.UAHeader)
 	return c, nil
 }

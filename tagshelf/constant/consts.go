@@ -2,7 +2,7 @@ package constant
 
 const (
 	// Tagshelf API base url
-	BaseURL = "https://tagshelf.com"
+	BaseURL = "https://app.tagshelf.com"
 
 	// Endpoints
 	EpToken      = BaseURL + "/token"
@@ -31,6 +31,9 @@ const (
 	// Auth Header
 	AuthHBearer = "Bearer %s"
 	AuthHAmx    = "amx %s"
+
+	// User Agent
+	UAHeader = "Tagshelf-Go-Client"
 )
 
 const (
