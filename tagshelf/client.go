@@ -55,36 +55,36 @@ func (c *client) do(method, ep string, body io.Reader) (r Responder, err error) 
 }
 
 func (c *client) Status() (r Responder, err error) {
-	return c.do(constant.EpStatusM, constant.EpStatus, nil)
+	return c.do(constant.EndpointStatusMethod, constant.EndpointStatus, nil)
 }
 
 func (c *client) WhoAmI() (r Responder, err error) {
-	return c.do(constant.EpWhoAmIM, constant.EpWhoAmI, nil)
+	return c.do(constant.EndpointWhoAmIMethod, constant.EndpointWhoAmI, nil)
 }
 
 func (c *client) Ping() (r Responder, err error) {
-	return c.do(constant.EpPingM, constant.EpPing, nil)
+	return c.do(constant.EndpointPingMethod, constant.EndpointPing, nil)
 }
 
 func (c *client) FileUpload(files *File) (r Responder, err error) {
 	return c.do(
-		constant.EpFileUploadM,
-		constant.EpFileUpload,
+		constant.EndpointFileUploadMethod,
+		constant.EndpointFileUpload,
 		files.NewReader(),
 	)
 }
 
 func (c *client) FileDetail(id string) (r Responder, err error) {
 	return c.do(
-		constant.EpFileDetailM,
-		fmt.Sprintf(constant.EpFileDetail, id),
+		constant.EndpointFileDetailMethod,
+		fmt.Sprintf(constant.EndpointFileDetail, id),
 		nil,
 	)
 }
 func (c *client) JobDetail(id string) (r Responder, err error) {
 	return c.do(
-		constant.EpJobDetailM,
-		fmt.Sprintf(constant.EpJobDetail, id),
+		constant.EndpointJobDetailMethod,
+		fmt.Sprintf(constant.EndpointJobDetail, id),
 		nil,
 	)
 }

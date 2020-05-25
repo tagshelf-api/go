@@ -26,8 +26,8 @@ func (c *HMACClient) Auth(config Config) (r Requester, err error) {
 	c.Client = &http.Client{}
 	c.Header = http.Header{}
 
-	c.Header.Set("Content-Type", constant.CtJSON)
-	c.Header.Set("User-Agent", constant.UAHeader)
+	c.Header.Set("Content-Type", constant.ContentTypeJSON)
+	c.Header.Set("User-Agent", constant.UserAgentHeader)
 	return c, nil
 }
 
@@ -72,7 +72,7 @@ func (c *HMACClient) Sign(method, uri string, body io.Reader) (
 }
 
 func (c *HMACClient) Status() (r Responder, err error) {
-	err = c.Sign(constant.EpStatusM, constant.EpStatus, nil)
+	err = c.Sign(constant.EndpointStatusMethod, constant.EndpointStatus, nil)
 	if err != nil {
 		return
 	}
@@ -81,7 +81,7 @@ func (c *HMACClient) Status() (r Responder, err error) {
 }
 
 func (c *HMACClient) WhoAmI() (r Responder, err error) {
-	err = c.Sign(constant.EpWhoAmIM, constant.EpWhoAmI, nil)
+	err = c.Sign(constant.EndpointWhoAmIMethod, constant.EndpointWhoAmI, nil)
 	if err != nil {
 		return
 	}
@@ -90,7 +90,7 @@ func (c *HMACClient) WhoAmI() (r Responder, err error) {
 }
 
 func (c *HMACClient) Ping() (r Responder, err error) {
-	err = c.Sign(constant.EpPingM, constant.EpPing, nil)
+	err = c.Sign(constant.EndpointPingMethod, constant.EndpointPing, nil)
 	if err != nil {
 		return
 	}
@@ -100,7 +100,8 @@ func (c *HMACClient) Ping() (r Responder, err error) {
 
 func (c *HMACClient) FileUpload(f *File) (r Responder, err error) {
 	err = c.Sign(
-		constant.EpFileUploadM, constant.EpFileUpload, f.NewReader(),
+		constant.EndpointFileUploadMethod,
+		constant.EndpointFileUpload, f.NewReader(),
 	)
 	if err != nil {
 		return
@@ -111,8 +112,8 @@ func (c *HMACClient) FileUpload(f *File) (r Responder, err error) {
 
 func (c *HMACClient) FileDetail(id string) (r Responder, err error) {
 	err = c.Sign(
-		constant.EpFileDetailM,
-		fmt.Sprintf(constant.EpFileDetail, id),
+		constant.EndpointFileDetailMethod,
+		fmt.Sprintf(constant.EndpointFileDetail, id),
 		nil,
 	)
 	if err != nil {
@@ -124,8 +125,8 @@ func (c *HMACClient) FileDetail(id string) (r Responder, err error) {
 
 func (c *HMACClient) JobDetail(id string) (r Responder, err error) {
 	err = c.Sign(
-		constant.EpJobDetailM,
-		fmt.Sprintf(constant.EpJobDetail, id),
+		constant.EndpointJobDetailMethod,
+		fmt.Sprintf(constant.EndpointJobDetail, id),
 		nil,
 	)
 	if err != nil {

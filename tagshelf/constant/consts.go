@@ -5,39 +5,39 @@ const (
 	BaseURL = "https://app.tagshelf.com"
 
 	// Endpoints
-	EpToken      = BaseURL + "/token"
-	EpStatus     = BaseURL + "/api/tagshelf/status"
-	EpWhoAmI     = BaseURL + "/api/tagshelf/who-am-i"
-	EpPing       = BaseURL + "/api/tagshelf/ping"
-	EpFileUpload = BaseURL + "/api/file/upload"
-	EpFileDetail = BaseURL + "/api/file/detail/%s"
-	EpJobDetail  = BaseURL + "/api/job/detail/%s"
+	EndpointToken      = BaseURL + "/token"
+	EndpointStatus     = BaseURL + "/api/tagshelf/status"
+	EndpointWhoAmI     = BaseURL + "/api/tagshelf/who-am-i"
+	EndpointPing       = BaseURL + "/api/tagshelf/ping"
+	EndpointFileUpload = BaseURL + "/api/file/upload"
+	EndpointFileDetail = BaseURL + "/api/file/detail/%s"
+	EndpointJobDetail  = BaseURL + "/api/job/detail/%s"
 
 	// Methods
-	MethodGET     = "GET"
-	MethodPOST    = "POST"
-	EpTokenM      = MethodPOST
-	EpStatusM     = MethodGET
-	EpWhoAmIM     = MethodGET
-	EpPingM       = MethodGET
-	EpFileUploadM = MethodPOST
-	EpFileDetailM = MethodGET
-	EpJobDetailM  = MethodGET
+	MethodGET                = "GET"
+	MethodPOST               = "POST"
+	EndpointTokenMethod      = MethodPOST
+	EndpointStatusMethod     = MethodGET
+	EndpointWhoAmIMethod     = MethodGET
+	EndpointPingMethod       = MethodGET
+	EndpointFileUploadMethod = MethodPOST
+	EndpointFileDetailMethod = MethodGET
+	EndpointJobDetailMethod  = MethodGET
 
 	// ContentTypes
-	CtJSON  = "application/json"
-	CtXForm = "application/x-www-form-urlencoded"
+	ContentTypeJSON  = "application/json"
+	ContentTypeXForm = "application/x-www-form-urlencoded"
 
 	// Auth Header
 	AuthHBearer = "Bearer %s"
 	AuthHAmx    = "amx %s"
 
 	// User Agent
-	UAHeader = "Tagshelf-Go-Client"
+	UserAgentHeader = "Tagshelf-Go-Client"
 )
 
 const (
-	OAuthGT  = "grant_type"
-	OAuthUSR = "username"
-	OAuthPWD = "password"
+	OAuthGrantType = "grant_type"
+	OAuthUSR       = "username"
+	OAuthPWD       = "password"
 )

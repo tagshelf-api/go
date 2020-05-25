@@ -41,8 +41,8 @@ func (c *OAuthClient) Auth(config Config) (r Requester, err error) {
 	}
 	c.token = token
 
-	c.Header.Set("Content-Type", constant.CtJSON)
-	c.Header.Set("User-Agent", constant.UAHeader)
+	c.Header.Set("Content-Type", constant.ContentTypeJSON)
+	c.Header.Set("User-Agent", constant.UserAgentHeader)
 	c.Header.Set(
 		"Authorization",
 		fmt.Sprintf(constant.AuthHBearer, token.AccessToken),
@@ -51,14 +51,14 @@ func (c *OAuthClient) Auth(config Config) (r Requester, err error) {
 }
 
 func (c OAuthClient) login() (token *OAuthToken, err error) {
-	c.Header.Set("Content-Type", constant.CtXForm)
+	c.Header.Set("Content-Type", constant.ContentTypeXForm)
 	data := url.Values{}
-	data.Set(constant.OAuthGT, c.GrantType)
+	data.Set(constant.OAuthGrantType, c.GrantType)
 	data.Set(constant.OAuthUSR, c.User)
 	data.Set(constant.OAuthPWD, c.Pass)
 
 	req, err := http.NewRequest(
-		constant.EpTokenM, constant.EpToken,
+		constant.EndpointTokenMethod, constant.EndpointToken,
 		strings.NewReader(data.Encode()),
 	)
 	if err != nil {
