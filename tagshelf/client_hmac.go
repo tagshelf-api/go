@@ -99,7 +99,9 @@ func (c *HMACClient) Ping() (r Responder, err error) {
 }
 
 func (c *HMACClient) FileUpload(f *File) (r Responder, err error) {
-	err = c.Sign(constant.EpFileUploadM, constant.EpFileUpload, nil)
+	err = c.Sign(
+		constant.EpFileUploadM, constant.EpFileUpload, f.NewReader(),
+	)
 	if err != nil {
 		return
 	}
