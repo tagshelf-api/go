@@ -10,6 +10,7 @@ type Requester interface {
 	FileUpload(*File) (Responder, error)
 	FileDetail(string) (Responder, error)
 	JobDetail(string) (Responder, error)
+	CompanyInbox(string) (Responder, error)
 }
 
 // Authorizer defines the behavior that authorizes a request
