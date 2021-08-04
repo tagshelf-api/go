@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/tagshelf-api/go/tagshelf/constant"
@@ -81,10 +82,22 @@ func (c *client) FileDetail(id string) (r Responder, err error) {
 		nil,
 	)
 }
+
 func (c *client) JobDetail(id string) (r Responder, err error) {
 	return c.do(
 		constant.EndpointJobDetailMethod,
 		fmt.Sprintf(constant.EndpointJobDetail, id),
+		nil,
+	)
+}
+
+func (c *client) CompanyInbox(email string) (r Responder, err error) {
+	v := url.Values{}
+	v.Set("inbox", email)
+
+	return c.do(
+		constant.MethodGET,
+		constant.EndpointCompanyInbox+"?"+v.Encode(),
 		nil,
 	)
 }
