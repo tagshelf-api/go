@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
 	"strings"
 
 	"github.com/tagshelf-api/go/tagshelf/constant"
@@ -30,8 +29,11 @@ type Config struct {
 
 type client struct {
 	Config
-	http.Header
+
 	*http.Client
+	http.Header
+
+	Query map[string]string
 }
 
 func (c *client) do(method, ep string, body io.Reader) (r Responder, err error) {
@@ -40,6 +42,17 @@ func (c *client) do(method, ep string, body io.Reader) (r Responder, err error) 
 		return nil, err
 	}
 	req.Header = c.Header.Clone()
+
+	if c.Query != nil {
+		// params should live just for a request
+		defer func() { c.Query = nil }()
+
+		q := req.URL.Query()
+		for k, v := range c.Query {
+			q.Add(k, v)
+		}
+		req.URL.RawQuery = q.Encode()
+	}
 
 	res, err := c.Client.Do(req)
 	if err != nil {
@@ -92,12 +105,14 @@ func (c *client) JobDetail(id string) (r Responder, err error) {
 }
 
 func (c *client) CompanyInbox(email string) (r Responder, err error) {
-	v := url.Values{}
-	v.Set("inbox", email)
+	if c.Query == nil {
+		c.Query = make(map[string]string)
+	}
+	c.Query["inbox"] = email
 
 	return c.do(
 		constant.MethodGET,
-		constant.EndpointCompanyInbox+"?"+v.Encode(),
+		constant.EndpointCompanyInbox,
 		nil,
 	)
 }
