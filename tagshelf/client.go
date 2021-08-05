@@ -34,23 +34,6 @@ type client struct {
 	query map[string]string
 }
 
-func (c *client) SetQuery(query map[string]string) {
-	c.query = query
-}
-
-func (c *client) Query() map[string]string {
-	if c.query == nil {
-		return nil
-	}
-
-	queryCopy := make(map[string]string)
-	for k, v := range c.query {
-		queryCopy[k] = v
-	}
-
-	return queryCopy
-}
-
 func (c *client) do(method, ep string, body io.Reader, query map[string]string) (r Responder, err error) {
 	req, err := http.NewRequest(method, ep, body)
 	if err != nil {
@@ -224,4 +207,21 @@ func (f *File) NewReader() io.Reader {
 	}
 
 	return strings.NewReader(fmt.Sprintf("%v", *f))
+}
+
+func (c *client) SetQuery(query map[string]string) {
+	c.query = query
+}
+
+func (c *client) Query() map[string]string {
+	if c.query == nil {
+		return nil
+	}
+
+	queryCopy := make(map[string]string)
+	for k, v := range c.query {
+		queryCopy[k] = v
+	}
+
+	return queryCopy
 }
