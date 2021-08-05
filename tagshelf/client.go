@@ -29,26 +29,41 @@ type Config struct {
 
 type client struct {
 	Config
-
 	*http.Client
 	http.Header
-
-	Query map[string]string
+	query map[string]string
 }
 
-func (c *client) do(method, ep string, body io.Reader) (r Responder, err error) {
+func (c *client) SetQuery(query map[string]string) {
+	c.query = query
+}
+
+func (c *client) Query() map[string]string {
+	if c.query == nil {
+		return nil
+	}
+
+	queryCopy := make(map[string]string)
+	for k, v := range c.query {
+		queryCopy[k] = v
+	}
+
+	return queryCopy
+}
+
+func (c *client) do(method, ep string, body io.Reader, query map[string]string) (r Responder, err error) {
 	req, err := http.NewRequest(method, ep, body)
 	if err != nil {
 		return nil, err
 	}
 	req.Header = c.Header.Clone()
 
-	if c.Query != nil {
+	if query != nil {
 		// params should live just for a request
-		defer func() { c.Query = nil }()
+		defer func() { query = nil }()
 
 		q := req.URL.Query()
-		for k, v := range c.Query {
+		for k, v := range query {
 			q.Add(k, v)
 		}
 		req.URL.RawQuery = q.Encode()
@@ -69,15 +84,15 @@ func (c *client) do(method, ep string, body io.Reader) (r Responder, err error) 
 }
 
 func (c *client) Status() (r Responder, err error) {
-	return c.do(constant.EndpointStatusMethod, constant.EndpointStatus, nil)
+	return c.do(constant.EndpointStatusMethod, constant.EndpointStatus, nil, nil)
 }
 
 func (c *client) WhoAmI() (r Responder, err error) {
-	return c.do(constant.EndpointWhoAmIMethod, constant.EndpointWhoAmI, nil)
+	return c.do(constant.EndpointWhoAmIMethod, constant.EndpointWhoAmI, nil, nil)
 }
 
 func (c *client) Ping() (r Responder, err error) {
-	return c.do(constant.EndpointPingMethod, constant.EndpointPing, nil)
+	return c.do(constant.EndpointPingMethod, constant.EndpointPing, nil, nil)
 }
 
 func (c *client) FileUpload(files *File) (r Responder, err error) {
@@ -85,6 +100,7 @@ func (c *client) FileUpload(files *File) (r Responder, err error) {
 		constant.EndpointFileUploadMethod,
 		constant.EndpointFileUpload,
 		files.NewReader(),
+		c.Query(),
 	)
 }
 
@@ -92,6 +108,7 @@ func (c *client) FileDetail(id string) (r Responder, err error) {
 	return c.do(
 		constant.EndpointFileDetailMethod,
 		fmt.Sprintf(constant.EndpointFileDetail, id),
+		nil,
 		nil,
 	)
 }
@@ -101,19 +118,18 @@ func (c *client) JobDetail(id string) (r Responder, err error) {
 		constant.EndpointJobDetailMethod,
 		fmt.Sprintf(constant.EndpointJobDetail, id),
 		nil,
+		nil,
 	)
 }
 
 func (c *client) CompanyInbox(email string) (r Responder, err error) {
-	if c.Query == nil {
-		c.Query = make(map[string]string)
-	}
-	c.Query["inbox"] = email
+	c.SetQuery(map[string]string{"inbox": email})
 
 	return c.do(
 		constant.MethodGET,
 		constant.EndpointCompanyInbox,
 		nil,
+		c.Query(),
 	)
 }
 
