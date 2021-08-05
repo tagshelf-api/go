@@ -4,6 +4,8 @@ import "io"
 
 // Requester defines tagshelf interaction contract
 type Requester interface {
+	Clienter
+
 	Status() (Responder, error)
 	WhoAmI() (Responder, error)
 	Ping() (Responder, error)
@@ -27,4 +29,9 @@ type Signer interface {
 type Responder interface {
 	Status() int
 	Body() Payload
+}
+
+type Clienter interface {
+	SetQuery(query map[string]string)
+	Query() map[string]string
 }
