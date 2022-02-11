@@ -142,20 +142,10 @@ func (c Response) String() string {
 }
 
 type File struct {
-	URL   string   `json:"url,omitempty"`
-	URLs  []string `json:"urls,omitempty"`
-	Merge bool     `json:"merge,omitempty"`
-
-	*SingleFile `json:",omitempty"`
-	*MultiFile  `json:",omitempty"`
-}
-
-type SingleFile struct {
+	URL      string       `json:"url,omitempty"`
+	URLs     []string     `json:"urls,omitempty"`
+	Merge    bool         `json:"merge,omitempty"`
 	MetaData FileMetadata `json:"metadata,omitempty"`
-}
-
-type MultiFile struct {
-	MetaData []FileMetadata `json:"metadata,omitempty"`
 }
 
 type FileMetadata map[string]interface{}
@@ -173,31 +163,13 @@ func (f *File) Add(url string, urls ...string) (err error) {
 }
 
 func (f *File) AddMeta(meta FileMetadata, metas ...FileMetadata) (err error) {
-	switch {
-	// When the merge field is set to true.
-	// - The metadata field should be a JSON object
-	case f.Merge == true && len(metas) == 0:
-		f.SingleFile = &SingleFile{meta}
-		f.MultiFile = nil
-	// When merge field is set to false
-	// - When using the url field  the metadata field should be a JSON object
-	case f.Merge == false && len(f.URLs) == 0 && len(metas) == 0:
-		f.SingleFile = &SingleFile{meta}
-		f.MultiFile = nil
-	// - When using the urls field this should be a JSON object array that
-	//   matches the urls field array length
-	case f.Merge == false && len(f.URLs) == len(metas)+1:
-		f.SingleFile = nil
-		f.MultiFile = &MultiFile{
-			make([]FileMetadata, len(metas)+1),
+	for i := range metas {
+		for k, v := range metas[i] {
+			meta[k] = v
 		}
-
-		f.MultiFile.MetaData = append(f.MultiFile.MetaData, meta)
-		f.MultiFile.MetaData = append(f.MultiFile.MetaData, metas...)
-	default:
-		err = fmt.Errorf("metadata provided does not match merge value")
 	}
 
+	f.MetaData = meta
 	return
 }
 
