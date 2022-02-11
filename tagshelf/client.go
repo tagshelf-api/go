@@ -162,6 +162,17 @@ func (f *File) Add(url string, urls ...string) (err error) {
 	return
 }
 
+func (f *File) AddMeta(meta FileMetadata, metas ...FileMetadata) (err error) {
+	for i := range metas {
+		for k, v := range metas[i] {
+			meta[k] = v
+		}
+	}
+
+	f.MetaData = meta
+	return
+}
+
 func (f *File) NewReader() io.Reader {
 	if b, err := json.Marshal(f); err == nil {
 		return bytes.NewReader(b)

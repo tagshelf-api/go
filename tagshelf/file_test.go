@@ -12,9 +12,9 @@ func TestFileUploadPayload(t *testing.T) {
 	expected := `{"url": "http://example.com", "metadata": {"hello": "world"}}`
 	upload := NewFileUpload()
 	upload.Add("http://example.com")
-	upload.MetaData = FileMetadata{
+	upload.AddMeta(FileMetadata{
 		"hello": "world",
-	}
+	})
 
 	b, err := json.Marshal(upload)
 	if err != nil {

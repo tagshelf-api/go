@@ -76,7 +76,7 @@ upload.Add("some-link-to-file")
 upload.Merge = false // true/false optional value
 // Upload Metadata
 meta := tagshelf.FileMetadata{"name": "John"}
-upload.Metadata = meta
+upload.AddMeta(meta)
 fileUpload, _ := client.FileUpload(upload)
 
 // ========= Job Detail
