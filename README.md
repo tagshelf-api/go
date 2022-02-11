@@ -76,11 +76,7 @@ upload.Add("some-link-to-file")
 upload.Merge = false // true/false optional value
 // Upload Metadata
 meta := tagshelf.FileMetadata{"name": "John"}
-// metas := []tagshelf.FileMetadata{
-// 	{"test": "silly"},
-// }
-err = upload.AddMeta(meta)
-// err = upload.AddMeta(meta, metas...)
+err = upload.Metadata = meta
 if err != nil {
 	log.Fatalf("error adding upload metadata: %v", err)
 }
