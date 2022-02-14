@@ -146,6 +146,7 @@ type File struct {
 	URLs     []string     `json:"urls,omitempty"`
 	Merge    bool         `json:"merge,omitempty"`
 	MetaData FileMetadata `json:"metadata,omitempty"`
+	Channel  string       `json:"channel,omitempty"`
 }
 
 type FileMetadata map[string]interface{}

@@ -36,3 +36,17 @@ func TestFileUploadPayloadNoMeta(t *testing.T) {
 
 	require.JSONEq(t, expected, string(b))
 }
+
+func TestFileUploadPayloadChannel(t *testing.T) {
+	expected := `{"url": "http://example.com","channel": "email"}`
+	upload := NewFileUpload()
+	upload.Add("http://example.com")
+	upload.Channel = "email"
+
+	b, err := json.Marshal(upload)
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+
+	require.JSONEq(t, expected, string(b))
+}
