@@ -147,6 +147,8 @@ type File struct {
 	Merge    bool         `json:"merge,omitempty"`
 	MetaData FileMetadata `json:"metadata,omitempty"`
 	Channel  string       `json:"channel,omitempty"`
+
+	PropagateMeta *bool `json:"propagate_metadata,omitempty"`
 }
 
 type FileMetadata map[string]interface{}
