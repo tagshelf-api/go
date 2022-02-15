@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/tagshelf-api/go/tagshelf/constant"
+	"github.com/tagshelf-api/go/tagshelf/typeutils"
 )
 
 // Config client configuration to comunicate with tagshelf API
@@ -182,6 +183,10 @@ func (f *File) NewReader() io.Reader {
 	}
 
 	return strings.NewReader(fmt.Sprintf("%v", *f))
+}
+
+func (f *File) PropagateMetadata(v bool) {
+	f.PropagateMeta = typeutils.PointerBool(v)
 }
 
 func (c *client) SetQuery(query map[string]string) {
